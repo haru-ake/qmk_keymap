@@ -16,7 +16,7 @@ Fork this repository to your Github account.
 
 ### 2. Initialize forked repository
 
-Execute `rake qmk:init` command on repository root. this command takes a lot of time.
+`git clone` the forked repository and execute `rake qmk:init` command in the repository root. this command takes a lot of time.
 
 Since `qmk_firmware` is added as a submodule, execute `git commit` command.
 
@@ -46,7 +46,7 @@ keyboards
 
 ### 4. Compile and upload
 
-Execute `rake` command on repository root.
+Execute `rake` command in the repository root.
 
 It should exist rake tasks to compile and upload firmware.
 
@@ -75,12 +75,16 @@ rake qmk:revert                             # revert qmk_firmware and nested sub
 rake qmk:update                             # update qmk_firmware to latest commit on upstream
 ```
 
+You set `subproject` shell environment if you want specify keyboard revision.
+
+e.g. `subproject=rev1 rake keyboard:lets_split:haru-ake`
+
 
 ## Update qmk_keymap
 
 ```
 $ git remote add upstream https://github.com/haru-ake/qmk_keymap.git
 $ git fetch upstream
-$ git merge upstream/master
+$ git merge --no-ff upstream/master
 ```
 
