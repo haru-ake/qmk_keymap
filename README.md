@@ -1,6 +1,6 @@
 # qmk_keymap
 
-QMK keymap collection for only own keyboards.
+QMK keymap collection for only the keyboards you own.
 
 
 ## Requirements
@@ -16,7 +16,7 @@ Fork this repository to your Github account.
 
 ### 2. Initialize forked repository
 
-Execute `rake qmk:init` command on repository root.
+Execute `rake qmk:init` command on repository root. this command takes a lot of time.
 
 Since `qmk_firmware` is added as a submodule, execute `git commit` command.
 
@@ -44,11 +44,11 @@ keyboards
 ```
 
 
-### 4. Compile and flash
+### 4. Compile and upload
 
 Execute `rake` command on repository root.
 
-It should exist rake tasks to compile and flash firmware.
+It should exist rake tasks to compile and upload firmware.
 
 #### Example
 
