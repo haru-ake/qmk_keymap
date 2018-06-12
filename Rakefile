@@ -7,19 +7,33 @@ def qmk_submodule?
   $?.success? && !r.empty?
 end
 
+def avr_gcc?
+  `which avr-gcc > /dev/null 2>&1`; $?.success?
+end
+
+def keyboard_revision(keyboard)
+  ENV['subproject'] ? "#{keyboard}/#{ENV['subproject']}" : keyboard
+end
+
 def call_qmk_firmware(keyboard, keymap, target=nil)
-  if ENV['subproject']
-    keyboard_rev = "#{keyboard}/#{ENV['subproject']}"
+  make_target = "#{keyboard_revision(keyboard)}:#{keymap}"
+
+  if avr_gcc?
+    make_target += ":#{target}" if target
+    sh "cd #{QMK_PATH} && make #{make_target}"
   else
-    keyboard_rev = keyboard
+    if target
+      Rake::Task["qmk:deceive"].invoke
+      ENV['PATH']  = "#{Dir.pwd}/.bin:#{ENV['PATH']}"
+      make_target += ":#{target}"
+      sh "cd #{QMK_PATH} && make #{make_target}"
+    else
+      sh "docker run --rm -v \"#{QMK_PATH}:/qmk:rw\" edasque/qmk_firmware make #{make_target}"
+    end
   end
-
-  make_target  = "#{keyboard_rev}:#{keymap}"
-  make_target += ":#{target}" if target
-
-  sh "cd #{QMK_PATH} && make #{make_target}"
 ensure
   Rake::Task["keyboard:#{keyboard}:clean"].invoke
+  Rake::Task["qmk:undeceive"].invoke
 end
 
 def keyboards()
