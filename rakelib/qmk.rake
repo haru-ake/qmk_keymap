@@ -26,4 +26,18 @@ namespace :qmk do
       git submodule foreach git submodule update --init --recursive
     CMD
   end
+
+  task :deceive do
+    sh <<~"CMD", verbose: false
+      for i in `find #{QMK_PATH}/.build/obj_* -name "*.d" -type f`; do
+        cp -f "$i" "${i%%.d}.td"
+      done
+    CMD
+  end
+
+  task :undeceive do
+    sh <<~"CMD", verbose: false
+      find #{QMK_PATH}/.build/obj_* -name "*.td" -type f -delete
+    CMD
+  end
 end
