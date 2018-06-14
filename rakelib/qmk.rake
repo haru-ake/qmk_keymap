@@ -28,6 +28,7 @@ namespace :qmk do
   end
 
   task :deceive do
+    raise "not found compiled firmware" unless Dir.exist?("#{QMK_PATH}/.build")
     sh <<~"CMD", verbose: false
       for i in `find #{QMK_PATH}/.build/obj_* -name "*.d" -type f`; do
         cp -f "$i" "${i%%.d}.td"
@@ -36,7 +37,7 @@ namespace :qmk do
   end
 
   task :undeceive do
-    sh <<~"CMD", verbose: false
+    sh <<~"CMD", verbose: false if Dir.exist?("#{QMK_PATH}/.build")
       find #{QMK_PATH}/.build/obj_* -name "*.td" -type f -delete
     CMD
   end
