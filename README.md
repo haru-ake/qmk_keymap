@@ -5,7 +5,7 @@ QMK keymap collection for only the keyboards you own.
 
 ## Requirements
 
-[QMK Firmware Build Tools](https://docs.qmk.fm/#/getting_started_build_tools) and `rake`
+[QMK Firmware Build Tools](https://docs.qmk.fm/#/getting_started_build_tools) and `rake`(Ruby 2.3+)
 
 
 ## Usage
