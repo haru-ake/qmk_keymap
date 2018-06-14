@@ -28,7 +28,7 @@ def call_qmk_firmware(keyboard, keymap, target=nil)
       make_target += ":#{target}"
       sh "cd #{QMK_PATH} && make #{make_target}"
     else
-      sh "docker run --rm -v \"#{QMK_PATH}:/qmk:rw\" edasque/qmk_firmware make #{make_target}"
+      sh "docker run --rm -v \"#{QMK_PATH}:/qmk:rw\" haruake/qmk_firmware make #{make_target}"
     end
   end
 ensure
