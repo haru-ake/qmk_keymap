@@ -45,6 +45,11 @@ namespace :keyboard do
         end
 
         namespace keymap[:name].to_sym do
+          desc 'compile qmk-dfu firmware' if keymap[:path]
+          task :qmk_dfu => "keyboard:#{keyboard[:name]}:copy" do
+            call_qmk_firmware(keyboard[:name], keymap[:name], 'production')
+          end
+
           QMK_MAKE_TARGETS.each do |target|
             desc target[:description] if keymap[:path]
             task target[:name] => "keyboard:#{keyboard[:name]}:copy" do
