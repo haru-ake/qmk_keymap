@@ -7,6 +7,7 @@ QMK_MAKE_TARGETS = [
   { :name => 'avrdude',  :description => 'upload firmware using avrdude' },
   { :name => 'dfu',      :description => 'upload firmware using dfu' },
   { :name => 'dfu-util', :description => 'upload firmware using dfu-uti' },
+  { :name => 'program',  :description => 'upload firmware using program' },
   { :name => 'teensy',   :description => 'upload firmware using teensy' },
   { :name => 'clean',    :description => 'cleans the build output files' }
 ]
