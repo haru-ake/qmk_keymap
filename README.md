@@ -1,6 +1,8 @@
 # qmk_keymap
 
-QMK keymap collection for only the keyboards you own.
+QMK keymap collection for only the keyboard you own.
+
+**Infomation**: It is not compatible with keyboards whose directory structure is not common. e.g. [clueboard](https://github.com/qmk/qmk_firmware/tree/master/keyboards/clueboard)
 
 
 ## Requirements
@@ -54,25 +56,29 @@ It should exist rake tasks to compile and upload firmware.
 
 ```
 $ rake
-rake keyboard:all                           # compile all keyboards
-rake keyboard:hhkb:all                      # compile all keymaps
-rake keyboard:hhkb:default                  # compile firmware
-rake keyboard:hhkb:default:avrdude          # upload firmware using avrdude
-rake keyboard:hhkb:default:clean            # cleans the build output files
-rake keyboard:hhkb:default:dfu              # upload firmware using dfu
-rake keyboard:hhkb:default:dfu-util         # upload firmware using dfu-uti
-rake keyboard:hhkb:default:teensy           # upload firmware using teensy
-rake keyboard:lets_split:all                # compile all keymaps
-rake keyboard:lets_split:haru-ake           # compile firmware
-rake keyboard:lets_split:haru-ake:avrdude   # upload firmware using avrdude
-rake keyboard:lets_split:haru-ake:clean     # cleans the build output files
-rake keyboard:lets_split:haru-ake:dfu       # upload firmware using dfu
-rake keyboard:lets_split:haru-ake:dfu-util  # upload firmware using dfu-uti
-rake keyboard:lets_split:haru-ake:teensy    # upload firmware using teensy
-rake qmk:clean                              # remove all untracked files in qmk_firmware
-rake qmk:init                               # initialize qmk_firmware
-rake qmk:revert                             # revert qmk_firmware and nested submodules to local HEAD
-rake qmk:update                             # update qmk_firmware to latest commit on upstream
+rake keyboard:all                                  # compile all keyboards
+rake keyboard:hhkb:all                             # compile all keymaps
+rake keyboard:hhkb:default                         # compile firmware
+rake keyboard:hhkb:default:clean                   # clean compiled firmware
+rake keyboard:hhkb:default:qmk_dfu                 # compile firmware by qmk-dfu
+rake keyboard:hhkb:default:upload:avrdude          # upload firmware using avrdude
+rake keyboard:hhkb:default:upload:dfu              # upload firmware using dfu
+rake keyboard:hhkb:default:upload:dfu-util         # upload firmware using dfu-uti
+rake keyboard:hhkb:default:upload:program          # upload firmware using program
+rake keyboard:hhkb:default:upload:teensy           # upload firmware using teensy
+rake keyboard:lets_split:all                       # compile all keymaps
+rake keyboard:lets_split:haru-ake                  # compile firmware
+rake keyboard:lets_split:haru-ake:clean            # clean compiled firmware
+rake keyboard:lets_split:haru-ake:qmk_dfu          # compile firmware by qmk-dfu
+rake keyboard:lets_split:haru-ake:upload:avrdude   # upload firmware using avrdude
+rake keyboard:lets_split:haru-ake:upload:dfu       # upload firmware using dfu
+rake keyboard:lets_split:haru-ake:upload:dfu-util  # upload firmware using dfu-uti
+rake keyboard:lets_split:haru-ake:upload:program   # upload firmware using program
+rake keyboard:lets_split:haru-ake:upload:teensy    # upload firmware using teensy
+rake qmk:clean                                     # remove all untracked files in qmk_firmware
+rake qmk:init                                      # initialize qmk_firmware
+rake qmk:revert                                    # revert qmk_firmware and nested submodules to local HEAD
+rake qmk:update                                    # update qmk_firmware to latest commit on upstream
 ```
 
 You set `subproject` shell environment if you want specify keyboard revision.
