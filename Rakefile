@@ -1,6 +1,41 @@
 require 'rake'
 
 QMK_PATH = "#{Dir.pwd}/qmk_firmware"
+QMK_DEFAULT_KEYMAPS = [
+  { :name => 'default', :path => nil }
+]
+QMK_MAKE_TARGETS = [
+  { :name        => 'clean',
+    :description => 'clean compiled firmware',
+    :target      => 'clean'
+  },
+  { :name        => 'qmk_dfu',
+    :description => 'compile firmware by qmk-dfu',
+    :target      => 'production'
+  }
+]
+QMK_UPLOAD_TARGETS = [
+  { :name        => 'avrdude',
+    :description => 'upload firmware using avrdude',
+    :target      => 'avrdude'
+  },
+  { :name        => 'dfu',
+    :description => 'upload firmware using dfu',
+    :target      => 'dfu'
+  },
+  { :name        => 'dfu-util',
+    :description => 'upload firmware using dfu-uti',
+    :target      => 'dfu-util'
+  },
+  { :name        => 'program',
+    :description => 'upload firmware using program',
+    :target      => 'program'
+  },
+  { :name        => 'teensy',
+    :description => 'upload firmware using teensy',
+    :target      => 'teensy'
+  }
+]
 
 def qmk_submodule?
   r = `git submodule status`
@@ -13,6 +48,24 @@ end
 
 def keyboard_revision(keyboard)
   ENV['subproject'] ? "#{keyboard}/#{ENV['subproject']}" : keyboard
+end
+
+def upload_target(keyboard, keymap=nil)
+  paths = ["./keyboards/#{keyboard}/.target"]
+  paths.unshift("./keyboards/#{keyboard}/keymaps/#{keymap}/.target") if keymap
+
+  target = nil
+  paths.each do |path|
+    begin
+      _t = File.read(path).strip
+      target = QMK_UPLOAD_TARGETS.find { |h| h[:name] == _t }
+      break if target
+    rescue
+      next
+    end
+  end
+
+  target
 end
 
 def call_qmk_firmware(keyboard, keymap, target=nil)
