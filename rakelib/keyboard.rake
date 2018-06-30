@@ -1,17 +1,5 @@
 require 'pathname'
 
-QMK_DEFAULT_KEYMAPS = [
-  { :name => 'default',  :path => nil }
-]
-QMK_MAKE_TARGETS = [
-  { :name => 'avrdude',  :description => 'upload firmware using avrdude' },
-  { :name => 'dfu',      :description => 'upload firmware using dfu' },
-  { :name => 'dfu-util', :description => 'upload firmware using dfu-uti' },
-  { :name => 'program',  :description => 'upload firmware using program' },
-  { :name => 'teensy',   :description => 'upload firmware using teensy' },
-  { :name => 'clean',    :description => 'cleans the build output files' }
-]
-
 namespace :keyboard do
   keyboards.each do |keyboard|
     desc 'compile all keyboards'
@@ -45,15 +33,25 @@ namespace :keyboard do
         end
 
         namespace keymap[:name].to_sym do
-          desc 'compile qmk-dfu firmware' if keymap[:path]
-          task :qmk_dfu => "keyboard:#{keyboard[:name]}:copy" do
-            call_qmk_firmware(keyboard[:name], keymap[:name], 'production')
-          end
-
           QMK_MAKE_TARGETS.each do |target|
             desc target[:description] if keymap[:path]
             task target[:name] => "keyboard:#{keyboard[:name]}:copy" do
-              call_qmk_firmware(keyboard[:name], keymap[:name], target[:name])
+              call_qmk_firmware(keyboard[:name], keymap[:name], target[:target])
+            end
+          end
+
+          if keymap[:path] && upload_target(keyboard[:name], keymap[:name])
+            desc 'upload firmware'
+            task :upload => \
+              "keyboard:#{keyboard[:name]}:#{keymap[:name]}:upload:#{upload_target(keyboard[:name], keymap[:name])[:name]}"
+          end
+
+          namespace :upload do
+            QMK_UPLOAD_TARGETS.each do |target|
+              desc target[:description] if keymap[:path] && !upload_target(keyboard[:name], keymap[:name])
+              task target[:name] => "keyboard:#{keyboard[:name]}:copy" do
+                call_qmk_firmware(keyboard[:name], keymap[:name], target[:name])
+              end
             end
           end
         end
